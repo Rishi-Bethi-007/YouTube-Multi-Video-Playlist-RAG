@@ -43,6 +43,7 @@ This system enables users to:
 
 ---
 # 🏗️ System Architecture
+````
 
 User (Streamlit Chat UI)
 ↓
@@ -60,6 +61,7 @@ LLM Reranking
 ↓
 Answer Generation (grounded + citations)
 
+````
 
 ---
 
@@ -72,7 +74,7 @@ Answer Generation (grounded + citations)
 | **Redis**     | Caches rewrite / embeddings / retrieval |
 | **Streamlit** | UI + session memory |
 
----
+
 
 # ✨ Key Features
 
@@ -120,7 +122,7 @@ Per-stage latency tracking:
 - Rerank
 - Generation
 
----
+
 
 # 📊 Why This Is Not a Demo RAG
 
@@ -156,7 +158,6 @@ This project demonstrates:
 - **RAGAS**
 - **Docker (local dev)**
 
----
 
 # 📂 Project Structure
 
@@ -178,8 +179,6 @@ youtube-multi-video-playlist-rag/
 └─ eval/
 
 
----
-
 # 🌍 Deployment
 
 Deployed on:
@@ -191,7 +190,6 @@ Deployed on:
 
 The system runs fully in the cloud using managed services.
 
----
 
 # 🔍 Example Use Cases
 
@@ -201,7 +199,6 @@ The system runs fully in the cloud using managed services.
 - “Compare what two videos say about scalability.”
 - “Summarize the key takeaways.”
 
----
 
 # 📈 Future Improvements
 
@@ -212,7 +209,6 @@ The system runs fully in the cloud using managed services.
 - Cost logging dashboard
 - Structured JSON outputs
 
----
 
 # 👨‍💻 About the Author
 
@@ -220,7 +216,6 @@ The system runs fully in the cloud using managed services.
 MSc AI & Automation  
 AI Engineer focused on production-grade LLM systems
 
----
 
 # ⭐ Why This Project Matters
 
