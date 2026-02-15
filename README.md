@@ -1,120 +1,170 @@
-# 📺 YouTube Multi-Video / Playlist RAG  
-**Production-style Retrieval-Augmented Chatbot with Memory**
+# 🎥 YouTube Multi-Video / Playlist RAG Chatbot  
+### Production-Grade Retrieval-Augmented Generation System with Memory
 
-Chat with multiple YouTube videos (or entire playlists) using a scalable RAG architecture built with:
-
-- **Streamlit** (ChatGPT-style UI)
-- **Pinecone** (Vector database)
-- **PostgreSQL** (Source of truth)
-- **Redis** (Caching layer)
-- **OpenAI** (Embeddings + LLM)
-- **Reranking + Dedup + Evaluation (RAGAS)**
+🚀 **Live Demo:**  
+👉 https://youtube-multi-video-playlist-rag-be5fqxqp9w7rvcffmlp3dk.streamlit.app/
 
 ---
 
-## 🚀 What This Project Solves
+## 🔥 Overview
+
+This project is a **production-style Retrieval-Augmented Generation (RAG) system** that allows users to chat with multiple YouTube videos or entire playlists using a conversational interface.
+
+Unlike demo RAG apps, this system is built with:
+
+- Scalable vector search
+- Persistent relational storage
+- Distributed caching
+- Query rewriting
+- Reranking
+- Deduplication
+- Evaluation harness
+- Latency tracking
+- Memory-aware chatbot behavior
+- Cloud deployment
+
+It demonstrates real-world AI system design beyond notebooks and toy examples.
+
+---
+
+# 🧠 What Problem Does This Solve?
 
 YouTube videos are long and difficult to search precisely.
 
-This system allows you to:
+This system enables users to:
 
-- Ingest **multiple videos or playlists**
+- Ingest multiple videos or playlists
 - Ask natural language questions
-- Get **timestamped citations**
-- Have **multi-turn conversations with memory**
-- Evaluate retrieval quality
-- Log latency per stage
+- Get timestamped citations
+- Continue conversations with memory
+- Reduce hallucinations via grounding
+- Measure retrieval quality
 - Deploy publicly
 
 ---
+# 🏗️ System Architecture
 
-# 🏗️ Architecture
-
-User → Streamlit Chat UI
+User (Streamlit Chat UI)
 ↓
-Query Rewrite (memory-aware)
+Conversation Summary Memory
+↓
+Query Rewriting (context-aware)
 ↓
 Embedding (cached)
 ↓
-Pinecone (vector search)
+Pinecone Vector Search
 ↓
-Postgres (fetch chunk text)
+PostgreSQL (source-of-truth chunks)
 ↓
-Rerank (LLM-based)
+LLM Reranking
 ↓
-Answer Generation (chat-style + citations)
+Answer Generation (grounded + citations)
 
-
-### Storage Design
-
-| Component     | Responsibility |
-|--------------|---------------|
-| Pinecone     | Stores vectors + minimal metadata |
-| PostgreSQL   | Stores full chunk text + video metadata |
-| Redis        | Caches rewrite / embeddings / retrieval / chunk text |
-| Streamlit    | UI + session memory |
 
 ---
 
-# ✨ Features
+# 🗂️ Storage Design
 
-## ✅ Multi-Video / Playlist Ingestion
-- Automatic chunking
-- Timestamp-aware segments
+| Component      | Responsibility |
+|---------------|---------------|
+| **Pinecone**  | Stores embeddings + minimal metadata |
+| **PostgreSQL**| Stores full chunk text + video metadata |
+| **Redis**     | Caches rewrite / embeddings / retrieval |
+| **Streamlit** | UI + session memory |
+
+---
+
+# ✨ Key Features
+
+## ✅ Multi-Video & Playlist Ingestion
+- Automatic chunking with overlap
+- Timestamp-aware metadata
 - Idempotent ingestion (dedup safe)
-- Video-level ingestion tracking
+- SHA1-based chunk identity
+- Safe re-indexing
+
+## ✅ Conversation Memory
+- Rolling summary (token-efficient)
+- Multi-turn contextual dialogue
+- Follow-up resolution:
+  - “What about that part?”
+  - “Explain that in more detail”
 
 ## ✅ Production Caching (Redis)
 - Query rewrite cache
 - Embedding cache
 - Retrieval cache
 - Chunk text cache
+- Fail-open design (app runs even if cache fails)
 
-## ✅ Reranking
-LLM-based reranker improves precision by selecting the best context from top-K retrieved candidates.
-
-## ✅ Conversation Memory
-- Maintains rolling summary
-- Supports follow-ups like:
-  - “What about that part?”
-  - “Explain more about that concept”
-- Token-efficient summarization
+## ✅ Reranking Layer
+Improves precision by re-evaluating top-K candidates before final generation.
 
 ## ✅ Deduplication
-- Chunk-level SHA1 IDs
-- Unique DB constraints
-- Ingestion logs prevent re-embedding
+- Stable chunk IDs
+- DB constraints
+- Safe re-ingestion
 
 ## ✅ Evaluation Harness
-- RAGAS metrics:
-  - Faithfulness
-  - Answer relevancy
-- Stage-level latency tracking
+- RAGAS metrics
+- Faithfulness scoring
+- Retrieval quality measurement
+- Latency logging per stage
 
 ## ✅ Observability
-- Per-stage timing:
-  - Rewrite
-  - Embedding
-  - Retrieval
-  - DB fetch
-  - Rerank
-  - Generation
-- Cache hit tracking
+Per-stage latency tracking:
+- Rewrite
+- Embedding
+- Retrieval
+- DB fetch
+- Rerank
+- Generation
+
+---
+
+# 📊 Why This Is Not a Demo RAG
+
+Most RAG projects:
+- Store full text in vector DB
+- No deduplication
+- No caching
+- No memory
+- No evaluation
+- No deployment
+
+This project demonstrates:
+
+- Proper separation of vector store vs source-of-truth database
+- Scalable architecture
+- Cloud-ready design
+- Caching strategy
+- Evaluation mindset
+- Token-efficient memory handling
+- Production resilience
+
+---
+
+# 🛠️ Tech Stack
+
+- **Python**
+- **Streamlit**
+- **OpenAI API**
+- **Pinecone**
+- **PostgreSQL (Neon)**
+- **Redis (Upstash)**
+- **LangChain**
+- **RAGAS**
+- **Docker (local dev)**
 
 ---
 
 # 📂 Project Structure
 
-
-
-youtube-rag/
+youtube-multi-video-playlist-rag/
 ├─ app.py
-├─ docker-compose.yml
 ├─ requirements.txt
-├─ .env.example
-├─ data/
-│ ├─ transcripts/
-│ └─ eval/testset.json
+├─ docker-compose.yml
+├─ README.md
 └─ src/
 ├─ config.py
 ├─ cache.py
@@ -125,137 +175,64 @@ youtube-rag/
 ├─ rewrite.py
 ├─ rerank.py
 ├─ memory.py
-└─ eval/run_eval.py
+└─ eval/
 
 
 ---
 
-# 🧠 How Memory Works
+# 🌍 Deployment
 
-We maintain:
+Deployed on:
 
-- Full chat in session
-- A rolling **summary**
-- Last N turns passed to:
-  - Query rewriting
-  - Answer generation
+- **Streamlit Community Cloud**
+- **Neon (Postgres)**
+- **Upstash (Redis)**
+- **Pinecone (Vector DB)**
 
-This enables contextual multi-turn dialogue without exploding token usage.
+The system runs fully in the cloud using managed services.
 
 ---
 
-# 🛠️ Local Setup
+# 🔍 Example Use Cases
 
-## 1️⃣ Start Postgres + Redis
+- “What are the main themes discussed?”
+- “Explain the concept mentioned at the beginning.”
+- “What does the speaker say about embeddings?”
+- “Compare what two videos say about scalability.”
+- “Summarize the key takeaways.”
 
-```bash
-docker compose up -d
+---
 
-2️⃣ Install dependencies
-pip install -r requirements.txt
+# 📈 Future Improvements
 
-3️⃣ Create .env
+- Hybrid retrieval (BM25 + vector)
+- MMR pre-reranking
+- Persistent chat sessions
+- User authentication
+- Cost logging dashboard
+- Structured JSON outputs
 
-Copy .env.example and fill in:
+---
 
-OPENAI_API_KEY=
-PINECONE_API_KEY=
-DATABASE_URL=postgresql+psycopg2://rag:rag@localhost:5432/ragdb
-REDIS_URL=redis://localhost:6379/0
+# 👨‍💻 About the Author
 
-4️⃣ Run the app
-streamlit run app.py
+**Rishi Bethi**  
+MSc AI & Automation  
+AI Engineer focused on production-grade LLM systems
 
-🧪 Run Evaluation
-python -m src.eval.run_eval
+---
 
+# ⭐ Why This Project Matters
 
-Outputs:
+This project demonstrates:
 
-Latency summary
+- AI system architecture
+- Retrieval engineering
+- Production design thinking
+- Data modeling
+- Caching strategies
+- Evaluation-first mindset
+- Deployment capability
 
-RAGAS metrics
+It reflects real-world AI engineering practices rather than experimental notebooks.
 
-🌍 Deployment (Free)
-Recommended Stack
-
-Streamlit Community Cloud
-
-Neon (free Postgres)
-
-Upstash (free Redis)
-
-Pinecone free tier
-
-Steps
-
-Push repo to GitHub
-
-Create Neon Postgres → copy DATABASE_URL
-
-Create Upstash Redis → copy REDIS_URL
-
-Deploy app on Streamlit Cloud
-
-Add secrets in app settings
-
-📊 Production Design Decisions
-Why Postgres?
-
-Vector DB is not source of truth.
-Text storage belongs in relational DB for:
-
-Re-indexing
-
-Analytics
-
-Versioning
-
-Data governance
-
-Why Redis?
-
-LLM apps are latency-sensitive.
-Redis reduces:
-
-Embedding cost
-
-Pinecone round trips
-
-DB pressure
-
-Why Reranking?
-
-Vector similarity alone is noisy.
-Reranking dramatically improves answer precision.
-
-Why Summary Memory?
-
-Full chat history grows tokens exponentially.
-Summaries maintain context efficiently.
-
-🔍 Example Questions
-
-“What are the main themes discussed?”
-
-“Explain the concept mentioned at the beginning.”
-
-“What does the speaker say about scalability?”
-
-“What about the part where he talks about embeddings?”
-
-“Summarize the difference between FAISS and Pinecone.”
-
-📈 Future Improvements
-
-MMR before reranking
-
-Hybrid search (BM25 + vector)
-
-Persistent chat sessions
-
-User authentication
-
-Cost logging per query
-
-Structured JSON answers
