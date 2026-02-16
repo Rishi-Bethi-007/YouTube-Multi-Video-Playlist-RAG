@@ -1,4 +1,4 @@
-# 🎥 YouTube Multi-Video / Playlist RAG Chatbot  
+# 🎥 YouTube RAG Chatbot  
 ### Production-Grade Retrieval-Augmented Generation System with Memory
 
 🚀 **Live Demo:**  
